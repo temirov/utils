@@ -1,0 +1,44 @@
+name: Release Build
+
+on:
+  push:
+    tags:
+      - 'v*' # Trigger only when pushing a tag starting with 'v'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: '1.23'
+
+      - name: Build for All Platforms
+        run: |
+          mkdir -p dist
+          GOOS=linux   GOARCH=amd64 go build -o dist/to_markdown-linux-amd64 ./cmd/to_markdown
+          GOOS=darwin  GOARCH=amd64 go build -o dist/to_markdown-darwin-amd64 ./cmd/to_markdown
+          GOOS=darwin  GOARCH=arm64 go build -o dist/to_markdown-darwin-arm64 ./cmd/to_markdown
+          GOOS=windows GOARCH=amd64 go build -o dist/to_markdown-windows-amd64.exe ./cmd/to_markdown
+
+      - name: Generate Checksums
+        run: |
+          cd dist
+          sha256sum * > checksums.txt
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            dist/to_markdown-linux-amd64
+            dist/to_markdown-darwin-amd64
+            dist/to_markdown-darwin-arm64
+            dist/to_markdown-windows-amd64.exe
+            dist/checksums.txt
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
