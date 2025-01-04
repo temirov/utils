@@ -3,6 +3,18 @@
 ## Download
 [Latest Release](https://github.com/temirov/utils/releases/latest)
 
+The files need to be made executable after the download
+
+```shell
+chmod +x to_markdown-darwin-amd64
+```
+
+NB If you are on Mac, remove quarantine attributes added by macOS
+
+```shell
+xattr -d com.apple.quarantine to_markdown-darwin-amd64
+```
+
 ### **`to_markdown` Utility**
 
 The **`to_markdown`** utility is a command-line tool designed to **clean and convert HTML or Markdown files** into **clean Markdown format**. It processes raw HTML and Markdown files, removing unnecessary comments, metadata, and unsupported tags, ensuring the output is well-structured and ready for use in documentation or publishing.
