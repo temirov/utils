@@ -5,6 +5,9 @@ on:
     tags:
       - 'v*' # Trigger only when pushing a tag starting with 'v'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -22,7 +25,7 @@ jobs:
 
       - name: Test
         run: |
-          go test -v ./test/to_markdown_test.go -run TestRenderAndSave
+          go test -v ./test -run TestRenderAndSave
 
       - name: Build for All Platforms
         run: |
@@ -37,9 +40,17 @@ jobs:
           cd dist
           sha256sum * > checksums.txt
 
+      - name: Extract Release Notes
+        run: |
+          TAG_NAME=${{ github.ref_name }}
+          sed -n "/## \[$TAG_NAME\]/,/\(## \[v[0-9]\)/p" CHANGELOG.md | grep -v '^## \[' > release_notes.md
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
+          name: "to_markdown release ${{ github.ref_name }}" # Uses the tag name (e.g., v1.0.1)
+          body_path: ./release_notes.md
+
           files: |
             dist/to_markdown-linux-amd64
             dist/to_markdown-darwin-amd64
