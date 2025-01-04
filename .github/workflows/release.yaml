@@ -8,6 +8,8 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
 
     steps:
       - name: Checkout code
@@ -17,6 +19,10 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: '1.23'
+
+      - name: Test
+        run: |
+          go test -v ./test/to_markdown_test.go -run TestRenderAndSave
 
       - name: Build for All Platforms
         run: |
