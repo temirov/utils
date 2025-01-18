@@ -1,4 +1,4 @@
-package file
+package utils
 
 import (
 	"bufio"
@@ -10,6 +10,13 @@ import (
 	"os"
 	"path/filepath"
 )
+
+func RemoveAll(tempDir string) {
+	err := os.RemoveAll(tempDir)
+	if err != nil {
+		log.Printf("failed to remove folder %s: %v", tempDir, err)
+	}
+}
 
 func CloseFile(closer io.Closer) {
 	err := closer.Close()
