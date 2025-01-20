@@ -2,6 +2,7 @@ package test
 
 import (
 	"github.com/temirov/utils/math"
+	"github.com/temirov/utils/pointers"
 	"testing"
 )
 
@@ -9,19 +10,20 @@ import (
 func TestFormatNumber(t *testing.T) {
 	tests := []struct {
 		name     string
-		input    float64
+		input    *float64
 		expected string
 	}{
-		{"Whole number", 4.0, "4"},
-		{"Whole number with trailing zeros", 5.000, "5"},
-		{"Decimal number", 4.5, "4.5"},
-		{"Decimal number with trailing zeros", 4.500, "4.5"},
-		{"Decimal number with multiple decimal places", 4.657, "4.657"},
-		{"Negative whole number", -3.0, "-3"},
-		{"Negative decimal number", -3.14, "-3.14"},
-		{"Zero", 0.0, "0"},
-		{"Negative zero", -0.0, "0"}, // Go treats -0.0 as 0.0 in string formatting
-		{"Large whole number", 123456789.0, "123456789"},
+		{"Whole number", pointers.FromFloat(4.0), "4"},
+		{"Whole number with trailing zeros", pointers.FromFloat(5.000), "5"},
+		{"Decimal number", pointers.FromFloat(4.5), "4.5"},
+		{"Decimal number with trailing zeros", pointers.FromFloat(4.500), "4.5"},
+		{"Decimal number with multiple decimal places", pointers.FromFloat(4.657), "4.657"},
+		{"Negative whole number", pointers.FromFloat(-3.0), "-3"},
+		{"Negative decimal number", pointers.FromFloat(-3.14), "-3.14"},
+		{"Zero", pointers.FromFloat(0.0), "0"},
+		{"Negative zero", pointers.FromFloat(-0.0), "0"}, // Go treats -0.0 as 0.0 in string formatting
+		{"Large whole number", pointers.FromFloat(123456789.0), "123456789"},
+		{"Null pointer (nil)", nil, ""},
 	}
 
 	for _, tt := range tests {
