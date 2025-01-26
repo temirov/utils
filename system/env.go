@@ -1,8 +1,10 @@
 package system
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
 )
 
 func GetEnvOrFail(name string) string {
@@ -11,4 +13,12 @@ func GetEnvOrFail(name string) string {
 		log.Fatalf("%s environment variable not set", name)
 	}
 	return value
+}
+
+func ExpandEnvVar(envVar string) (string, error) {
+	trimmedEnvVar := strings.TrimSpace(envVar)
+	if envValue := os.ExpandEnv(trimmedEnvVar); envValue != "" {
+		return strings.TrimSpace(envValue), nil
+	}
+	return "", fmt.Errorf("environment variable %s is not setup", trimmedEnvVar)
 }

@@ -1,6 +1,10 @@
 # Changelog
 
-## [v0.0.5] - 2025-01-19
+## [v0.0.5] - 2025-01-25
+### What's New 🎉~
+- Feature 1: ExpandEnvVar function expands an environmental variable
+
+## [v0.0.5] - 2025-01-25
 ### What's New 🎉~
 - Feature 1: GetEnvOrFail function added to retrieve an environmental variable or fail
 

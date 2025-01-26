@@ -9,6 +9,49 @@ import (
 	"testing"
 )
 
+func TestExpandEnvVar(t *testing.T) {
+	tests := []struct {
+		name       string
+		envKey     string
+		envValue   string
+		input      string
+		expectFail bool
+		expected   string
+	}{
+		{"VariableExists", "TEST_VAR", "value", "$TEST_VAR", false, "value"},
+		{"VariableNotSet", "MISSING_VAR", "", "$MISSING_VAR", true, ""},
+		{"MultipleVariables", "MULTI_VAR", "multi_value", "$MULTI_VAR/$TEST_VAR", false, "multi_value/value"},
+		{"NoExpansionNeeded", "", "", "NoExpansion", false, "NoExpansion"},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if tt.envValue != "" {
+				err := os.Setenv(tt.envKey, tt.envValue)
+				if err != nil {
+					t.Fatalf("failed to set environment variable %s: %v", tt.envKey, err)
+				}
+			} else {
+				_ = os.Unsetenv(tt.envKey)
+			}
+
+			result, err := ExpandEnvVar(tt.input)
+			if tt.expectFail {
+				if err == nil {
+					t.Errorf("expected error but got none for input: %s", tt.input)
+				}
+			} else {
+				if err != nil {
+					t.Errorf("did not expect error but got: %v for input: %s", err, tt.input)
+				}
+				if result != tt.expected {
+					t.Errorf("expected: %s, got: %s", tt.expected, result)
+				}
+			}
+		})
+	}
+}
+
 func TestGetEnvOrFailExternal(t *testing.T) {
 	tests := []struct {
 		name        string
