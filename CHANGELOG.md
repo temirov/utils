@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.0.5] - 2025-01-19
+### What's New 🎉~
+- Feature 1: GetEnvOrFail function added to retrieve an environmental variable or fail
+
 ## [v0.0.3] - 2025-01-19
 ### What's New 🎉~
 - Feature 1: SanitizeToCamelCase function added to be used for CSS ids etc
