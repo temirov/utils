@@ -1,3 +1,5 @@
+// Package file provides helpers for common file system interactions such as
+// creating, reading and removing files.
 package file
 
 import (
@@ -11,6 +13,8 @@ import (
 	"path/filepath"
 )
 
+// RemoveAll recursively deletes the directory at tempDir. Any error encountered
+// is logged but not returned.
 func RemoveAll(tempDir string) {
 	err := os.RemoveAll(tempDir)
 	if err != nil {
@@ -18,6 +22,7 @@ func RemoveAll(tempDir string) {
 	}
 }
 
+// CloseFile closes the provided io.Closer and logs an error if closing fails.
 func CloseFile(closer io.Closer) {
 	err := closer.Close()
 	if err != nil {
@@ -25,6 +30,8 @@ func CloseFile(closer io.Closer) {
 	}
 }
 
+// RemoveFile deletes the file located at filePath. Errors are logged and not
+// returned to the caller.
 func RemoveFile(filePath string) {
 	err := os.Remove(filePath)
 	if err != nil {
@@ -32,6 +39,9 @@ func RemoveFile(filePath string) {
 	}
 }
 
+// ReadLines reads a text file line by line and returns a slice of strings. The
+// file is opened for reading and closed automatically. An error is returned if
+// the file cannot be opened or scanned.
 func ReadLines(filename string) ([]string, error) {
 	file, err := os.Open(filename)
 	if err != nil {
@@ -52,6 +62,8 @@ func ReadLines(filename string) ([]string, error) {
 	return lines, nil
 }
 
+// SaveFile writes fileContent to a file named fileName.html inside outputDir.
+// The directory is created if it does not already exist.
 func SaveFile(outputDir string, fileName string, fileContent []byte) error {
 	directoryError := os.MkdirAll(outputDir, 0755)
 	if directoryError != nil {
@@ -67,6 +79,8 @@ func SaveFile(outputDir string, fileName string, fileContent []byte) error {
 	return nil
 }
 
+// ReadFile reads a file from disk and returns a bytes.Reader containing the
+// file contents.
 func ReadFile(filePath string) (*bytes.Reader, error) {
 	fileContent, err := os.ReadFile(filePath)
 	if err != nil {

@@ -1,3 +1,5 @@
+// Package math contains helpers for basic numeric calculations and
+// probability-based utilities.
 package math
 
 import (
@@ -7,6 +9,7 @@ import (
 	"strings"
 )
 
+// Min returns the smaller of the two provided integers.
 func Min(a int, b int) int {
 	if a < b {
 		return a
@@ -14,6 +17,7 @@ func Min(a int, b int) int {
 	return b
 }
 
+// Max returns the larger of the two provided integers.
 func Max(a, b int) int {
 	if a > b {
 		return a
@@ -21,6 +25,9 @@ func Max(a, b int) int {
 	return b
 }
 
+// FormatNumber converts a floating point number to a human friendly string. It
+// removes trailing zeros and omits a decimal point for whole numbers. A nil
+// pointer results in an empty string.
 func FormatNumber(num *float64) string {
 	if num == nil {
 		return ""
@@ -35,7 +42,8 @@ func FormatNumber(num *float64) string {
 	return str
 }
 
-// ChanceOf returns true with the given probability (0.0 to 1.0)
+// ChanceOf returns true with the given probability (0.0 to 1.0).
+// It uses crypto/rand to ensure a uniform distribution.
 func ChanceOf(probability float64) bool {
 	if probability <= 0 {
 		return false

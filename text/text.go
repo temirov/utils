@@ -1,3 +1,5 @@
+// Package text provides utilities for normalising and sanitising strings that
+// are commonly needed when generating text or HTML content.
 package text
 
 import (
@@ -5,7 +7,9 @@ import (
 	"strings"
 )
 
-// Normalize whitespace in Markdown output to avoid formatting mismatches
+// Normalize removes excess whitespace from the provided string. Each line is
+// trimmed and empty lines are removed to avoid Markdown formatting
+// mismatches.
 func Normalize(input string) string {
 	lines := strings.Split(input, "\n")
 	var cleaned []string
@@ -18,7 +22,8 @@ func Normalize(input string) string {
 	return strings.Join(cleaned, "\n")
 }
 
-// SanitizeToCamelCase sanitizes a string and converts it to camel case for use as an HTML ID
+// SanitizeToCamelCase sanitizes a string and converts it to camel case for use
+// as an HTML ID.
 func SanitizeToCamelCase(input string) string {
 	// Use regex to split by characters that are not letters or apostrophes.
 	reg := regexp.MustCompile(`[^a-zA-Z']+`)
