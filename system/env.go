@@ -1,3 +1,5 @@
+// Package system contains utilities for interacting with the host environment
+// such as reading environment variables.
 package system
 
 import (
@@ -7,6 +9,8 @@ import (
 	"strings"
 )
 
+// GetEnvOrFail retrieves the value of the environment variable with the given
+// name. If the variable is not set, the process exits via log.Fatalf.
 func GetEnvOrFail(name string) string {
 	value := os.Getenv(name)
 	if value == "" {
@@ -15,6 +19,9 @@ func GetEnvOrFail(name string) string {
 	return value
 }
 
+// ExpandEnvVar expands an environment variable reference and returns its value
+// trimmed of surrounding spaces. An error is returned if the referenced
+// variable is not set.
 func ExpandEnvVar(envVar string) (string, error) {
 	trimmedEnvVar := strings.TrimSpace(envVar)
 	if envValue := os.ExpandEnv(trimmedEnvVar); envValue != "" {
